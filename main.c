@@ -515,6 +515,10 @@ interrupt void sciRxISR(void)
                     speed_data[0] = '+';
                 }
 
+                // byte 0 - sign for direction + or -
+                // byte 2 - bits [6-0] are the most significant bits of the 14 bit unsigned speed data
+                // byte 3 - bits [6-0] are the least significant bits of the 14 bit unsigned speed data
+                // The 8th bits are set to 1 due to signal integrity concerns
                 speed_data[1] = ( (test>>7) & 0x00FF) | 0x80;
                 speed_data[2] = (test & 0x00FF) | 0x80;
                 speed_data[3] = '\n';
@@ -526,11 +530,12 @@ interrupt void sciRxISR(void)
 
             // byte 0 - c = set the current for the motor
             // byte 1 - sign for direction + or -
-            // byte 2 - MSB for current value in mA
-            // byte 3 - LSB for current value in mA
+            // byte 2 - bits [6-0] are the most significant bits of the 14 bit unsigned current data
+            // byte 3 - bits [6-0] are the least significant bits of the 14 bit unsigned current data
             if(length == 4 && command[0] == 'c')
             {
                 uint16_t current = 0;
+                // The 8th bits are set to 1 due to signal integrity concerns
                 current = ( (command[2] & 0x7F ) << 7) | (command[3] & 0x7F);
 
                 if(command[1] == '+')
