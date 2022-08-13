@@ -61,6 +61,14 @@
 
 #define LED_BLINK_FREQ_Hz   5
 
+#define SPEED_FULL_SCALE_RPM ((float_t)5461.0)
+#define SPEED_DATA_LENGTH_BITS (14)
+#define SPEED_RESOLUTION_kRPM_PER_BIT ( SPEED_FULL_SCALE_RPM/( 1000.0 * (float_t)(2<<(SPEED_DATA_LENGTH_BITS-1)) ) )
+
+#define CURRENT_FULL_SCALE_mA ((float_t)5000.0)
+#define CURRENT_DATA_LENGTH_BITS (14)
+#define CURRENT_RESOLUTION_A_PER_BIT ( CURRENT_FULL_SCALE_mA/( 1000.0 * (float_t)(2<<(CURRENT_DATA_LENGTH_BITS-1)) ) )
+
 
 // **************************************************************************
 // the globals
@@ -493,10 +501,10 @@ interrupt void sciRxISR(void)
                 gMotorVars.Flag_enableSys = false;
             }
 
-            // byte 0 - d = disable the system
+            // byte 0 - g = get motor speed
             if(length == 1 && command[0] == 'g' && send_speed_data == 0)
             {
-                uint16_t test = (uint16_t) (_IQtoF(_IQabs(gMotorVars.Speed_krpm))*6000.0/2.0);
+                uint16_t test = (uint16_t) (_IQtoF(_IQabs(gMotorVars.Speed_krpm))/SPEED_RESOLUTION_kRPM_PER_BIT);
 
                 if(gMotorVars.Speed_krpm < _IQ(0.0))
                 {
@@ -527,11 +535,12 @@ interrupt void sciRxISR(void)
 
                 if(command[1] == '+')
                 {
-                    gMotorVars.IqRef_A = _IQ(current*153.0*2.0/1000000.0);
+                    gMotorVars.IqRef_A = _IQ(current*CURRENT_RESOLUTION_A_PER_BIT);
+
                 }
                 else if(command[1] == '-')
                 {
-                    gMotorVars.IqRef_A = _IQ(current*-153.0*2.0/1000000.0);
+                    gMotorVars.IqRef_A = _IQ(current*-1.0*CURRENT_RESOLUTION_A_PER_BIT);
                 }
 
 
