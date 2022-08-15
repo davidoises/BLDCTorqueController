@@ -91,8 +91,8 @@ extern "C" {
 //! \brief It is recommended to start with a value ~3x greater than the USER_ADC_FULL_SCALE_VOLTAGE_V and increase to 4-5x if scenarios where a Bemf calculation may exceed these limits
 //! \brief This value is also used to calculate the minimum flux value: USER_IQ_FULL_SCALE_VOLTAGE_V/USER_EST_FREQ_Hz/0.7
 // TODO: Modify here
-//#define USER_IQ_FULL_SCALE_VOLTAGE_V      (13.5)//(13.5) // Outrunner
-#define USER_IQ_FULL_SCALE_VOLTAGE_V      (23) // TigerGB36/gm4108
+#define USER_IQ_FULL_SCALE_VOLTAGE_V      (13.5)//(13.5) // Outrunner
+//#define USER_IQ_FULL_SCALE_VOLTAGE_V      (23) // TigerGB36/gm4108
 
 //! \brief Defines the maximum voltage at the input to the AD converter
 //! \brief The value that will be represented by the maximum ADC input (3.3V) and conversion (0FFFh)
@@ -413,8 +413,8 @@ extern "C" {
 //#define USER_MOTOR Estun_EMJ_04APB22
 //#define USER_MOTOR Anaheim_BLY172S
 //#define USER_MOTOR OutrunnerA2212_6T_2200kv
-//#define USER_MOTOR Outrunner5010_360
-#define USER_MOTOR MAD_5005_280KV
+#define USER_MOTOR Outrunner5010_360
+//#define USER_MOTOR MAD_5005_280KV
 //#define USER_MOTOR AerodriveDST_700
 //#define USER_MOTOR OutrunnerA2212_13T_1000kv
 //#define USER_MOTOR GM4108H_120T
